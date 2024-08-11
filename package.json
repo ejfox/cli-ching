@@ -3,6 +3,15 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "bin": {
+    "cli-ching": "./index.js"
+  },
+  "keywords": [
+    "i-ching",
+    "divination",
+    "cli",
+    "oracle"
+  ],
   "dependencies": {
     "axios": "^1.7.3",
     "blessed": "^0.1.81",
