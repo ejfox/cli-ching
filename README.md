@@ -1,6 +1,12 @@
 # CLI-CHING
 
-CLI-CHING is a command-line interface tool for consulting the I Ching (Book of Changes). It provides a digital means of casting hexagrams and receiving interpretations, blending ancient wisdom with modern technology.
+CLI-CHING is a command-line interface tool for consulting the I Ching (Book of Changes). It provides a digital means of casting hexagrams and receiving interpretations, blending ancient wisdom with modern technology. It does not cast for you, you must bring 3 coins and report their results back to the application, which will help you convert them into the correct line. 
+
+
+
+https://github.com/user-attachments/assets/133a7d1d-a4bc-4131-b675-4de0b2466ddb
+
+
 
 ## Features
 
