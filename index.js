@@ -327,7 +327,12 @@ async function main() {
 
   if (process.argv.includes("-q")) {
     const qIndex = process.argv.indexOf("-q");
-    question = process.argv.slice(qIndex + 1).filter(arg => !arg.startsWith('-')).join(" ");
+    // Get all args after -q, but stop at the next flag (or use everything if no flags follow)
+    const afterQ = process.argv.slice(qIndex + 1);
+    const nextFlagIndex = afterQ.findIndex(arg => arg.startsWith('-') && arg !== '-');
+    question = nextFlagIndex > 0 
+      ? afterQ.slice(0, nextFlagIndex).join(" ")
+      : afterQ.join(" ");
   } else {
     question = await askQuestion("Enter your question: ");
   }
