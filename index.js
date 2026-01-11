@@ -308,6 +308,18 @@ async function main() {
     console.log(
       "🌍 Natural RNG Mode: Atmospheric noise (Random.org) or Quantum (ANU QRNG)\n"
     );
+    console.log(
+      "⚠️  WARNING: The traditional method of physically throwing coins is considered"
+    );
+    console.log(
+      "   the proper and preferred way to consult the I Ching. The physical act of"
+    );
+    console.log(
+      "   casting is an integral part of the divination process. Use auto mode only"
+    );
+    console.log(
+      "   when physical coins are not available.\n"
+    );
   }
 
   const config = loadConfig();

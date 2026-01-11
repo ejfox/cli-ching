@@ -67,7 +67,7 @@ This mode uses:
 2. **ANU Quantum Random Numbers** - Random numbers from quantum phenomena (fallback)
 3. **Pseudo-random generator** - Standard RNG if natural sources are unavailable
 
-The natural RNG mode eliminates the need for physical coins while maintaining the randomness essential to I Ching divination.
+⚠️ **Important Note**: The traditional method of physically throwing coins is considered the proper and preferred way to consult the I Ching. The physical act of casting is an integral part of the divination process. The natural RNG mode should only be used when physical coins are not available.
 
 ## Coin Tossing
 
