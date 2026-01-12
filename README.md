@@ -12,6 +12,10 @@ https://github.com/user-attachments/assets/133a7d1d-a4bc-4131-b675-4de0b2466ddb
 
 - Simple command-line interface
 - Flexible coin toss input
+- **Natural RNG Mode**: Automatic hexagram generation using true random numbers from natural processes
+  - Random.org (atmospheric noise)
+  - ANU Quantum Random Numbers (quantum phenomena)
+  - Graceful fallback to pseudo-random if APIs unavailable
 - Hexagram visualization
 - AI-powered interpretations
 - History of recent consultations
@@ -49,6 +53,21 @@ You can also start a consultation with a question directly from the command line
 ```
 node index.js -q "Will my project succeed?"
 ```
+
+### Natural RNG Mode (Automatic Coin Tosses)
+
+For a fully automated experience, use the `--auto` or `-a` flag to generate hexagrams using true random numbers from natural processes:
+
+```
+node index.js --auto -q "What should I focus on today?"
+```
+
+This mode uses:
+1. **Random.org** - True random numbers generated from atmospheric noise
+2. **ANU Quantum Random Numbers** - Random numbers from quantum phenomena (fallback)
+3. **Pseudo-random generator** - Standard RNG if natural sources are unavailable
+
+⚠️ **Important Note**: The traditional method of physically throwing coins is considered the proper and preferred way to consult the I Ching. The physical act of casting is an integral part of the divination process. The natural RNG mode should only be used when physical coins are not available.
 
 ## Coin Tossing
 

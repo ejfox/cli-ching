@@ -95,10 +95,51 @@ const rl = readline.createInterface({
 });
 
 let question,
-  results = [];
+  results = [],
+  autoMode = false;
 
 function askQuestion(query) {
   return new Promise((resolve) => rl.question(query, resolve));
+}
+
+// Natural RNG using Random.org API (atmospheric noise) or ANU QRNG (quantum)
+async function getRandomOrgNumbers(count, min, max) {
+  try {
+    const url = `https://www.random.org/integers/?num=${count}&min=${min}&max=${max}&col=1&base=10&format=plain&rnd=new`;
+    const response = await axios.get(url, { timeout: 5000 });
+    return response.data
+      .trim()
+      .split("\n")
+      .map((n) => parseInt(n));
+  } catch (error) {
+    // Try ANU Quantum Random Numbers as backup
+    try {
+      const response = await axios.get(
+        `https://qrng.anu.edu.au/API/jsonI.php?length=${count}&type=uint8`,
+        { timeout: 5000 }
+      );
+      if (response.data && response.data.data) {
+        console.log(
+          "\nUsing ANU Quantum Random Numbers (quantum phenomena)..."
+        );
+        // Map from 0-255 range to min-max range
+        return response.data.data.map(
+          (n) => Math.floor((n / 255) * (max - min + 1)) + min
+        );
+      }
+    } catch (quantumError) {
+      // Both APIs failed
+    }
+
+    console.log(
+      "\nWarning: Could not connect to natural RNG services (Random.org or ANU QRNG)."
+    );
+    console.log("Falling back to pseudo-random number generator.");
+    // Fallback to standard Math.random
+    return Array.from({ length: count }, () =>
+      Math.floor(Math.random() * (max - min + 1)) + min
+    );
+  }
 }
 
 function displayLogo() {
@@ -107,6 +148,17 @@ function displayLogo() {
 }
 
 async function getCoinToss(tossNumber) {
+  if (autoMode) {
+    // Use natural RNG from Random.org or ANU QRNG
+    const randomValues = await getRandomOrgNumbers(3, 0, 1);
+    const headsCount = randomValues.filter((v) => v === 1).length;
+    const coinPattern = randomValues.map((v) => (v === 1 ? "H" : "T")).join("");
+    console.log(
+      `[Toss ${tossNumber}/6] Natural RNG: ${coinPattern} (${headsCount} heads)`
+    );
+    return headsCount;
+  }
+
   while (true) {
     const answer = await askQuestion(
       `[Toss ${tossNumber}/6] Enter coin results (e.g., TTH, HTT): `
@@ -250,6 +302,26 @@ async function getInterpretation(hexNum, transformedHexNum, changingLines) {
 async function main() {
   displayLogo();
 
+  // Check for auto mode flag
+  if (process.argv.includes("-a") || process.argv.includes("--auto")) {
+    autoMode = true;
+    console.log(
+      "🌍 Natural RNG Mode: Atmospheric noise (Random.org) or Quantum (ANU QRNG)\n"
+    );
+    console.log(
+      "⚠️  WARNING: The traditional method of physically throwing coins is considered"
+    );
+    console.log(
+      "   the proper and preferred way to consult the I Ching. The physical act of"
+    );
+    console.log(
+      "   casting is an integral part of the divination process. Use auto mode only"
+    );
+    console.log(
+      "   when physical coins are not available.\n"
+    );
+  }
+
   const config = loadConfig();
   if (config.length > 0) {
     console.log("Recent throws:");
@@ -265,15 +337,25 @@ async function main() {
     console.log();
   }
 
-  if (process.argv[2] === "-q") {
-    question = process.argv.slice(3).join(" ");
+  if (process.argv.includes("-q")) {
+    const qIndex = process.argv.indexOf("-q");
+    // Get all args after -q, but stop at the next flag (or use everything if no flags follow)
+    const afterQ = process.argv.slice(qIndex + 1);
+    const nextFlagIndex = afterQ.findIndex(arg => arg.startsWith('-') && arg !== '-');
+    question = nextFlagIndex > 0 
+      ? afterQ.slice(0, nextFlagIndex).join(" ")
+      : afterQ.join(" ");
   } else {
     question = await askQuestion("Enter your question: ");
   }
 
-  console.log(
-    "\nPrepare your 3 coins. We'll guide you through six tosses to build your hexagram."
-  );
+  if (autoMode) {
+    console.log("\nGenerating hexagram using natural randomness...");
+  } else {
+    console.log(
+      "\nPrepare your 3 coins. We'll guide you through six tosses to build your hexagram."
+    );
+  }
 
   await buildHexagram();
 
