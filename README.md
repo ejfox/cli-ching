@@ -21,18 +21,28 @@ https://github.com/user-attachments/assets/133a7d1d-a4bc-4131-b675-4de0b2466ddb
 - History of recent consultations
 - Supports quick queries via command-line arguments
 
+## Requirements
+
+- **Node.js 18+**
+- *(Optional)* A local LLM server on `http://localhost:1234` for AI
+  interpretations — e.g. [LM Studio](https://lmstudio.ai) or
+  [Ollama](https://ollama.com). **Casting works fully without it**; if no
+  server is found, the tool simply draws your hexagram and skips the AI reading.
+
 ## Installation
 
 1. Ensure you have Node.js installed on your system.
 2. Clone this repository:
    ```
-   git clone https://github.com/yourusername/cli-ching.git
+   git clone https://github.com/ejfox/cli-ching.git
    cd cli-ching
    ```
 3. Install the required dependencies:
    ```
    npm install
    ```
+
+To get a global `cli-ching` command, also run `npm link` (or `npm install -g .`).
 
 ## Usage
 
@@ -94,9 +104,9 @@ CLI-CHING automatically saves your consultations to a `.iching-throws` file in y
 - figlet: For generating ASCII art text
 - readline: For handling user input (built into Node.js)
 
-## AI Interpretation
+## AI Interpretation (optional)
 
-The tool uses a local LLM (Language Model) running on `http://localhost:1234` for generating interpretations. Ensure your LLM server is running before using the interpretation feature.
+The tool talks to an OpenAI-compatible chat endpoint at `http://localhost:1234/v1/chat/completions` (e.g. LM Studio or Ollama). Start a local model server on port 1234 before consulting if you want AI readings. **It's entirely optional** — if no server is found, the tool prints a short note and your hexagram stands on its own. Either way, the consultation is saved to your history.
 
 ## Customization
 
@@ -105,3 +115,7 @@ You can modify the `getInterpretation` function in `index.js` to use a different
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+MIT — see [LICENSE](LICENSE).
